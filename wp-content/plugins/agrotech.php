@@ -1,12 +1,12 @@
 <?php
  
  /**
- * Plugin Name: ОЗСМ Плагін
- * Description: Власний плагін, що містить функціонал для сайту ОЗСМ.
+ * Plugin Name: ОЗСМ "АгроТех" Плагін
+ * Description: Власний плагін, що містить функціонал для сайту.
  */
  
  if ( is_admin() ) {
-    require_once __DIR__ . '/ozsm.php';
+    require_once __DIR__ . '/agrotech.php';
 }
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -20,9 +20,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  * TODO: complete labels. See get_post_type_labels() 
  */
  
-if ( ! function_exists( 'ozsm_setup_custom_post_types' ) ) {
+if ( ! function_exists( 'at_setup_custom_post_types' ) ) {
 	
-	function ozsm_setup_custom_post_types() {
+	function at_setup_custom_post_types() {
 				 
 		/**
 		* Registers a product as a custom post type.
@@ -108,30 +108,30 @@ if ( ! function_exists( 'ozsm_setup_custom_post_types' ) ) {
 		] );
 	}
  }
-add_action( 'init', 'ozsm_setup_custom_post_types' );
+add_action( 'init', 'at_setup_custom_post_types' );
 
  
  /**
  * Activate the plugin.
  */
  
-if ( ! function_exists( 'ozsm_activate' ) ) {
-	function ozsm_activate() { 
+if ( ! function_exists( 'at_activate' ) ) {
+	function at_activate() { 
 		// Trigger our function that registers the custom post type plugin.
-		ozsm_setup_custom_post_types(); 
+		at_setup_custom_post_types(); 
 		// Clear the permalinks after the post type has been registered.
 		flush_rewrite_rules(); 
 	}
  }
-register_activation_hook( __FILE__, 'ozsm_activate' );
+register_activation_hook( __FILE__, 'at_activate' );
 
 
 /**
  * Deactivation hook.
  */
  
-if ( ! function_exists( 'ozsm_deactivate' ) ) {
-	function ozsm_deactivate() {
+if ( ! function_exists( 'at_deactivate' ) ) {
+	function at_deactivate() {
 		// Unregister the post type, so the rules are no longer in memory.
 		unregister_post_type( 'product' );
 		unregister_post_type( 'spare_part' );
@@ -139,4 +139,4 @@ if ( ! function_exists( 'ozsm_deactivate' ) ) {
 		flush_rewrite_rules();
 	}
 }
-register_deactivation_hook( __FILE__, 'ozsm_deactivate' );
+register_deactivation_hook( __FILE__, 'at_deactivate' );
