@@ -1,10 +1,11 @@
 <?php
- 
+include 'agrotech_contacts.php';
+
  /**
  * Plugin Name: ОЗСМ "АгроТех" Плагін
  * Description: Власний плагін, що містить функціонал для сайту.
  */
- 
+
  if ( is_admin() ) {
     require_once __DIR__ . '/agrotech.php';
 }
@@ -12,22 +13,22 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
- 
- 
+
+
  /**
  * A function to register custom post types.
  *
- * TODO: complete labels. See get_post_type_labels() 
+ * TODO: complete labels. See get_post_type_labels()
  */
- 
+
 if ( ! function_exists( 'at_setup_custom_post_types' ) ) {
-	
+
 	function at_setup_custom_post_types() {
-				 
+
 		/**
 		* Registers a product as a custom post type.
 		*/
-		
+
 		register_post_type( 'product', [
 			'public' => true,
 			'publicly_queryable' => true,
@@ -64,12 +65,12 @@ if ( ! function_exists( 'at_setup_custom_post_types' ) ) {
 				'item_link_description' => 'Посилання на продукт',
 			],
 		] );
-		
-		
+
+
 		/**
 		* Registers a spare part as a custom post type.
 		*/
-		
+
 		register_post_type( 'spare_part', [
 			'public' => true,
 			'publicly_queryable' => true,
@@ -110,17 +111,16 @@ if ( ! function_exists( 'at_setup_custom_post_types' ) ) {
  }
 add_action( 'init', 'at_setup_custom_post_types' );
 
- 
  /**
  * Activate the plugin.
  */
- 
+
 if ( ! function_exists( 'at_activate' ) ) {
-	function at_activate() { 
+	function at_activate() {
 		// Trigger our function that registers the custom post type plugin.
-		at_setup_custom_post_types(); 
+		at_setup_custom_post_types();
 		// Clear the permalinks after the post type has been registered.
-		flush_rewrite_rules(); 
+		flush_rewrite_rules();
 	}
  }
 register_activation_hook( __FILE__, 'at_activate' );
@@ -129,7 +129,7 @@ register_activation_hook( __FILE__, 'at_activate' );
 /**
  * Deactivation hook.
  */
- 
+
 if ( ! function_exists( 'at_deactivate' ) ) {
 	function at_deactivate() {
 		// Unregister the post type, so the rules are no longer in memory.

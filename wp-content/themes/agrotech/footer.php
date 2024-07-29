@@ -12,7 +12,7 @@
 ?>
 
 	<footer id="colophon" class="site-footer">
-
+		<?php echo get_option('at_primary_phone'); ?>
 	</footer><!-- #colophon -->
 </div><!-- #page -->
 
