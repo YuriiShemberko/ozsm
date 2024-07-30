@@ -110,14 +110,6 @@ hr {
 	overflow: visible;
 }
 
-/**
- * 1. Correct the inheritance and scaling of font size in all browsers.
- * 2. Correct the odd `em` font sizing in all browsers.
- */
-pre {
-	font-family: monospace, monospace;
-	font-size: 1em;
-}
 
 /* Text-level semantics
 	 ========================================================================== */
@@ -434,16 +426,6 @@ blockquote {
 
 address {
 	margin: 0 0 1.5em;
-}
-
-pre {
-	background: #eee;
-	font-family: "Courier 10 Pitch", courier, monospace;
-	line-height: 1.6;
-	margin-bottom: 1.6em;
-	max-width: 100%;
-	overflow: auto;
-	padding: 1.6em;
 }
 
 code,
@@ -868,7 +850,6 @@ textarea {
 	margin-bottom: 1.5em;
 }
 
-
 h1,
 h2,
 h3,
@@ -879,6 +860,7 @@ p,
 span,
 a,
 text,
+pre,
 div {
 	font-family: 'Roboto', sans-serif;
 }
@@ -1032,6 +1014,7 @@ div {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	text-align: center;
 	width: 100%;
 
 	h1 {
@@ -1042,7 +1025,7 @@ div {
 	}
 
 	p {
-		font-size: 0.9rem;
+		font-size: 0.8rem;
 		color: rgba(120, 120, 120, 0.8);
 		margin: 0;
 	}
@@ -1050,13 +1033,36 @@ div {
 
 .page-content-placeholder {
 	width: 100%;
-	height: 800px;
+	height: 900px;
 }
 
 /* Footer */
+
 .site-footer {
-	height: 100px;
-	background: rgba(0, 0, 0, 0.9);
 	display: flex;
-	flex-direction: row;
+	background: rgba(0, 0, 0, 0.9);
+	padding: 1rem 2.5rem;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	gap: 2rem;
+
+	h4, p, pre, a {
+		margin: 0;
+	}
+
+	h4 {
+		color: rgba(255, 255, 255, 0.5);
+	}
+
+	p, pre, a {
+		color: rgba(120, 120, 120, 0.8);
+		font-size: 0.8rem;
+		outline: none;
+	}
+}
+
+.site-footer-section {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
 }

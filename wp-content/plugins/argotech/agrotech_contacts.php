@@ -15,10 +15,10 @@ add_action ( 'admin_menu', 'at_add_contacts_page_to_admin_panel' );
 
 if ( ! function_exists ('at_load_manage_contacts_assets' ) ) {
   function at_load_manage_contacts_assets( $hook ) {
-    if ( $hook !== 'toplevel_page_manage_contacts' ) {
+    if ( $hook !== 'settings_page_manage_contacts' ) {
       return;
     }
-    wp_enqueue_style( 'at_admin_style', plugins_url( 'argotech/assets/css/admin.css', __FILE__ ) );
+    wp_enqueue_style( 'at_admin_style', plugins_url( 'argotech/assets/css/admin.css' ) );
     wp_enqueue_script( 'at_admin_script', plugins_url( 'argotech/assets/js/agrotech_contacts.js' ) );
   }
 }
@@ -49,6 +49,22 @@ if ( ! function_exists ('at_register_contacts_options' ) ) {
       'show_in_rest' => true,
       'default' => '',
     ] );
+
+    // Working hours
+    register_setting (
+      'at_contacts', 'at_working_hours', [
+      'type' => 'string',
+      'show_in_rest' => true,
+      'default' => '',
+    ] );
+
+    // TikTok link
+    register_setting (
+      'at_contacts', 'at_tiktok_link', [
+      'type' => 'string',
+      'show_in_rest' => true,
+      'default' => '',
+    ] );
   }
 }
 add_action( 'admin_init', 'at_register_contacts_options' );
@@ -62,22 +78,32 @@ if ( ! function_exists ('at_render_manage_contacts_page' ) ) {
     <form method="post" action="options.php">
         <?php settings_fields( 'at_contacts' ); ?>
         <?php do_settings_sections( 'at_contacts' ); ?>
-        <table class="form-table">
-            <tr valign="top">
-            <th scope="row">Основний контактний номер телефону</th>
-            <td><input type="text" name="at_primary_phone" value="<?php echo esc_attr( get_option('at_primary_phone') ); ?>" /></td>
-            </tr>
+        <div class="options-wrapper">
+          <div class="option-container">
+            <h4>Основний контактний номер телефону</h4>
+            <input type="tel" name="at_primary_phone" value="<?php echo esc_attr( get_option( 'at_primary_phone' ) ); ?>" />
+          </div>
 
-            <tr valign="top">
-            <th scope="row">Додатковий контактний номер телефону</th>
-            <td><input type="text" name="at_secondary_phone" value="<?php echo esc_attr( get_option('at_secondary_phone') ); ?>" /></td>
-            </tr>
+          <div class="option-container">
+            <h4>Додатковий контактний номер телефону</h4>
+            <input type="tel" name="at_secondary_phone" value="<?php echo esc_attr( get_option( 'at_secondary_phone' ) ); ?>" />
+          </div>
 
-            <tr valign="top">
-            <th scope="row">Адреса контактної електронної пошти</th>
-            <td><input type="text" name="at_email" value="<?php echo esc_attr( get_option('at_email') ); ?>" /></td>
-            </tr>
-        </table>
+          <div class="option-container">
+            <h4>Адреса контактної електронної пошти</h4>
+            <input type="text" name="at_email" value="<?php echo esc_attr( get_option( 'at_email' ) ); ?>" />
+          </div>
+
+          <div class="option-container">
+            <h4>Посилання на TikTok аккаунт</h4>
+            <input type="text" name="at_tiktok_link" value="<?php echo esc_attr( get_option( 'at_tiktok_link' ) ); ?>" />
+          </div>
+
+          <div class="option-container">
+            <h4>Робочі години</h4>
+            <textarea name="at_working_hours"><?php echo esc_attr( get_option( 'at_working_hours' ) ); ?></textarea>
+          </div>
+        </div>
 
         <?php submit_button(); ?>
 
