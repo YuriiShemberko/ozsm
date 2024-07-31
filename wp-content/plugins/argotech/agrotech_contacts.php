@@ -96,7 +96,7 @@ if ( ! function_exists ('at_render_manage_contacts_page' ) ) {
 
           <div class="option-container">
             <h4>Посилання на TikTok аккаунт</h4>
-            <input type="text" name="at_tiktok_link" value="<?php echo esc_attr( get_option( 'at_tiktok_link' ) ); ?>" />
+            <input type="url" name="at_tiktok_link" value="<?php echo esc_attr( get_option( 'at_tiktok_link' ) ); ?>" />
           </div>
 
           <div class="option-container">
