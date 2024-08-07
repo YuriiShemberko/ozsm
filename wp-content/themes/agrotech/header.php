@@ -8,6 +8,7 @@
  *
  * @package Agrotech
  */
+wp_enqueue_style( 'at_header_style', get_template_directory_uri() . '/css/header.css' );
 
 ?>
 <!doctype html>
@@ -27,7 +28,9 @@
 
 	<header id="masthead" class="site-header">
 		<div class="site-branding">
-			<?php the_custom_logo(); ?>
+			<div class="ozsm-logo">
+				<?php the_custom_logo(); ?>
+			</div>
 			<div class="site-branding-text">
 				<h1><?php bloginfo( 'name' ); ?></h1>
 				<p class="site-description"><?php echo get_bloginfo( 'description', 'display' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></p>

@@ -15,6 +15,7 @@ if ( ! function_exists( 'at_setup_custom_post_types' ) ) {
 			'description' => 'This is a post type which describes a product',
       'menu_icon' => 'dashicons-products',
       'supports' => ['title', 'thumbnail', 'comments'],
+			'rewrite' => array( 'slug' => 'products' ),
 			'labels' => [
 				'name' => 'Продукти',
 				'add_new' => 'Додати продукт',
@@ -58,6 +59,7 @@ if ( ! function_exists( 'at_setup_custom_post_types' ) ) {
 			'description' => 'This is a post type which describes a spare part',
       'supports' => ['title', 'thumbnail', 'comments'],
       'menu_icon' => 'dashicons-admin-tools',
+			'rewrite' => array( 'slug' => 'parts' ),
 			'labels' => [
 				'name' => 'Запчастини',
 				'add_new' => 'Додати запчастину',

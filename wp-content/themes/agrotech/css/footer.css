@@ -1,0 +1,28 @@
+.site-footer {
+	display: flex;
+	background: rgba(0, 0, 0, 0.9);
+	padding: 1rem 2.5rem;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	gap: 2rem;
+
+	h4, p, pre, a {
+		margin: 0;
+	}
+
+	h4 {
+		color: rgba(255, 255, 255, 0.5);
+	}
+
+	p, pre, a {
+		color: rgba(120, 120, 120, 0.8);
+		font-size: 0.8rem;
+		outline: none;
+	}
+}
+
+.site-footer-section {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}

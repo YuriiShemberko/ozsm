@@ -9,6 +9,8 @@
  * @package Agrotech
  */
 
+wp_enqueue_style( 'at_footer_style', get_template_directory_uri() . '/css/footer.css' );
+
 ?>
 
 	<footer id="colophon" class="site-footer">
