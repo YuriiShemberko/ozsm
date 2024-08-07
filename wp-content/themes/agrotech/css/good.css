@@ -2,7 +2,7 @@ h1, h2, h3 {
   margin: 0;
 }
 
-.product-wrapper {
+.good-wrapper {
   display: flex;
   flex-direction: row;
   width: 100%;
@@ -10,7 +10,7 @@ h1, h2, h3 {
   gap: 4rem;
 }
 
-.product-info-wrapper {
+.good-info-wrapper {
   width: 100%;
   display: flex;
   gap: 2rem;
@@ -150,7 +150,7 @@ h1, h2, h3 {
 }
 
 @media screen and (max-width: 58.75em) {
-  .product-wrapper {
+  .good-wrapper {
     gap: 4rem;
     flex-direction: column;
   }
