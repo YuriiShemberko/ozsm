@@ -11,117 +11,19 @@ h1, h2, h3 {
 }
 
 .good-info-wrapper {
-  width: 100%;
+  width: 50%;
   display: flex;
   gap: 2rem;
   flex-direction: column;
   justify-content: flex-start;
 }
 
-.primary-image-container {
+.images-section-wrapper {
+  width: 50%;
   display: flex;
-  position: relative;
-  cursor: pointer;
-  background: white;
-  width: 100%;
-  aspect-ratio: 4 / 3;
-  align-self: center;
-
-  img {
-    width: 100%;
-    object-fit: contain;
-  }
-}
-
-.secondary-images-wrapper {
-  align-self: center;
-  display: flex;
-  width: 100%;
-  padding-bottom: 3rem;
+  padding: 2rem;
+  justify-content: center;
   overflow: hidden;
-
-  /* width */
-  ::-webkit-scrollbar {
-    height: .6rem;
-  }
-
-  /* Track */
-  ::-webkit-scrollbar-track {
-    border: 1px solid rgba(120 ,120, 120, 0.4);
-  }
-
-  /* Handle */
-  ::-webkit-scrollbar-thumb {
-    background: rgba(235, 170, 25, 0.5);
-    cursor: pointer;
-  }
-}
-
-.secondary-images-container {
-  width: 100%;
-  display: flex;
-  flex-wrap: nowrap;
-  flex-direction: row;
-  justify-content: flex-start;
-  overflow-x: auto;
-  gap: 1rem;
-  padding: 1rem;
-  background: white;
-  box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
-}
-
-.secondary-image-wrapper {
-  img {
-    min-width: 8rem;
-    max-width: 8rem;
-    aspect-ratio: 4 / 3;
-    height: auto;
-    cursor: pointer;
-    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
-  }
-
-  .selected {
-    border: 3px solid rgba(235, 170, 25, 0.5);
-  }
-}
-
-.slider-button {
-  cursor: pointer;
-  position: absolute;
-  width: 2rem;
-  height: 4rem;
-  bottom: 50%;
-  z-index: 2;
-  border: none;
-  background: rgb(235, 170, 25);
-  opacity: 60%;
-  padding: 0;
-  span {
-    width: 100%;
-    height: 100%;
-    font-size: 2rem;
-    color: white;
-    align-self: center;
-    display: flex;
-
-    &:before {
-      align-self: center;
-    }
-  }
-
-  &:hover {
-    opacity: 100%;
-    transition: 0.1s;
-    transform: scale(1.5);
-  }
-}
-
-#slider-button-prev {
-  right: calc(100% - 2.5rem);
-}
-
-#slider-button-next {
-  left: calc(100% - 2.5rem);
 }
 
 .contact-button {
@@ -152,12 +54,17 @@ h1, h2, h3 {
 @media screen and (max-width: 58.75em) {
   .good-wrapper {
     gap: 4rem;
+    width: 100%;
     flex-direction: column;
   }
-}
 
-@media screen and (max-width: 37.5em) {
-  .secondary-images-wrapper {
-    display: none;
+  .good-info-wrapper {
+    width: 100%;
+    padding: 2rem;
+  }
+
+  .images-section-wrapper {
+    width: 100%;
+    padding: 0;
   }
 }
