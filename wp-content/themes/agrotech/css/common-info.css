@@ -63,7 +63,7 @@ h1, h2, h3 {
   cursor: pointer;
   max-width: 10rem;
   padding: 1rem 2rem;
-	background: rgba(235, 170, 25, 0.7);
+	background: var(--accent-color);
   border: none;
   color: rgba(0, 0, 0, 0.8);
   border-radius: .5rem;
@@ -75,7 +75,6 @@ h1, h2, h3 {
   gap: 1rem;
 
   &:hover {
-    background: rgba(235, 170, 25, 0.9);
     box-shadow: rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px, rgba(17, 17, 26, 0.1) 0px 24px 80px;
   }
 
@@ -92,7 +91,7 @@ h1, h2, h3 {
   }
 
   .good-info-wrapper {
-    width: 100%;
+    width: fit-content;
     padding: 2rem;
   }
 

@@ -171,3 +171,46 @@ require get_template_directory() . '/inc/customizer.php';
 if ( defined( 'JETPACK__VERSION' ) ) {
 	require get_template_directory() . '/inc/jetpack.php';
 }
+
+function at_contact_us_form_submit() {
+    // Check if there is any post data and if it comes from our form
+    if( empty( $_POST ) || !isset( $_POST[ 'action' ] ) || $_POST[ 'action' ] != 'at_contact_us_form_submit') {
+        return;
+    }
+
+    // Check if inputs submitted are valid
+  	if(
+			( !isset( $_POST[ 'at_contact_form_phone' ]) || empty( $_POST[ 'at_contact_form_phone' ] ) ) ||
+			( !isset( $_POST[ 'at_contact_form_email' ]) || empty( $_POST[ 'at_contact_form_email' ] ) ) ||
+			( !isset( $_POST[ 'at_contact_form_message' ]) || empty( $_POST[ 'at_contact_form_message' ] ) ) ||
+			( !isset( $_POST[ 'at_contact_form_name' ]) || empty( $_POST[ 'at_contact_form_name' ] ) )
+		) {
+        $_SESSION[ 'at_contact_form_submit_error' ] = __( 'Помилка: неправильні дані.' );
+        return;
+    }
+
+		$to = "yurii.shemberko@gmail.com";//get_option( 'at_contacts_at_email' );
+		$subject = "Нове звернення на сайті ozsm.ua";
+		$message =
+			"<h3>Надійшло нове звернення через форму зворотнього зв'язку:</h3>" . "<br>" .
+			"Від: <b>" . $_POST[ 'at_contact_form_name' ] . "</b><br>" .
+			"Email клієнта: " . $_POST[ 'at_contact_form_email' ] . "<br>" .
+			"Номер телефону клієнта: <b>" . $_POST[ 'at_contact_form_phone' ] . "</b><br><br>" .
+			"Текст звернення: " . "<br>" . $_POST[ 'at_contact_form_message' ];
+
+		// Always set content-type when sending HTML email
+		$headers = "MIME-Version: 1.0" . "\r\n";
+		$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+
+		// More headers
+		$headers .= 'From: <admin@ozsm.ua>' . "\r\n";
+
+		$result = mail( $to, $subject, $message, $headers );
+
+		if ($result) {
+			$_SESSION[ 'at_contact_form_submit_success' ] = 'Ваше звернення уже в обробці.';
+		} else {
+			$_SESSION[ 'at_contact_form_submit_error' ] = 'Виникла непередбачувана помилка при відправці Вашого звернення.';
+		}
+}
+add_action( 'init', 'at_contact_us_form_submit' );

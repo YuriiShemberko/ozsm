@@ -7,6 +7,9 @@
  * @package Agrotech
  */
 
+ global $wp;
+echo home_url( $wp->request );
+
 get_header();
 ?>
 
