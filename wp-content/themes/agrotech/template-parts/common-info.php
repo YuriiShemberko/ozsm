@@ -27,7 +27,7 @@ wp_enqueue_style( 'at_common_info_style', get_template_directory_uri() . '/css/c
 			</button>
       <div><?php echo $description ?></div>
 			<?php
-				if ( !empty( $product_attrs ) ) {
+				if ( !empty( $product_attrs ) && !empty( $product_attrs[0] ) ) {
 				  ?>
 				    <table class="product-attributes">
 				      <tr>
@@ -39,6 +39,11 @@ wp_enqueue_style( 'at_common_info_style', get_template_directory_uri() . '/css/c
 				      <?php
 				        foreach( $product_attrs as $attr_str ) {
 				          $attr_content = explode( '!', $attr_str );
+
+                  if ( count( $attr_content ) != 2 ) {
+                    continue;
+                  }
+
 				          $attr_name = $attr_content[0];
 				          $attr_value = $attr_content[1];
 				        ?>

@@ -190,12 +190,13 @@ function at_contact_us_form_submit() {
     }
 
 		$to = "yurii.shemberko@gmail.com";//get_option( 'at_contacts_at_email' );
-		$subject = "Нове звернення на сайті ozsm.ua";
+		$subject = "Нове повідомлення на сайті ozsm.ua";
 		$message =
-			"<h3>Надійшло нове звернення через форму зворотнього зв'язку:</h3>" . "<br>" .
+			"<h3>Надійшло нове повідомлення:</h3>" . "<br>" .
 			"Від: <b>" . $_POST[ 'at_contact_form_name' ] . "</b><br>" .
 			"Email клієнта: " . $_POST[ 'at_contact_form_email' ] . "<br>" .
-			"Номер телефону клієнта: <b>" . $_POST[ 'at_contact_form_phone' ] . "</b><br><br>" .
+			"Номер телефону клієнта: <b>" . $_POST[ 'at_contact_form_phone' ] . "</b><br>" .
+			"Контекст: " . $_POST[ 'at_contact_form_context' ] . "<br><br>" .
 			"Текст звернення: " . "<br>" . $_POST[ 'at_contact_form_message' ];
 
 		// Always set content-type when sending HTML email

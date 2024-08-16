@@ -1,5 +1,5 @@
 <?php
-  $img_ids = $args['img_ids'];
+  $img_ids = $args[ 'img_ids' ];
   $img_srcs = [];
   foreach ($img_ids as $img_id) {
     $img_srcs[] = wp_get_attachment_image_src ( $img_id, 'large' )[0];

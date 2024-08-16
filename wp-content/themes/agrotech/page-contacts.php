@@ -27,7 +27,7 @@ wp_enqueue_style( 'at_contacts_page_style', get_template_directory_uri() . '/css
 					</div>
 					<div class="contact-form-wrapper">
 					 <h3>Задайте нам питання через форму</h3>
-					 <?php get_template_part( "template-parts/contact-form" ) ?>
+					 <?php get_template_part( "template-parts/contact-form", "at_contact_form_contact", array( 'context' => "Сторінка --КОНТАКТИ--") ) ?>
 					</div>
 			 	</div>
 				<div class="google-map-wrapper">
