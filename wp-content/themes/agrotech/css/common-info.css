@@ -61,7 +61,7 @@ h1, h2, h3 {
 
 .contact-button {
   cursor: pointer;
-  max-width: 10rem;
+  max-width: 12rem;
   padding: 1rem 2rem;
 	background: var(--accent-color);
   border: none;
@@ -72,7 +72,7 @@ h1, h2, h3 {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
+  gap: .5rem;
 
   &:hover {
     box-shadow: rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px, rgba(17, 17, 26, 0.1) 0px 24px 80px;
@@ -81,6 +81,27 @@ h1, h2, h3 {
   h3 {
     margin-top: 0.3rem;
   }
+}
+
+.actions-section {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  font-size: 0.75rem;
+
+  .cart-status {
+    color: green;
+  }
+
+  a, a:visited {
+    display: block;
+    color: var(--accent-color);
+    font-size: 1rem;
+  }
+}
+
+#add-to-cart-notification {
+  display: none;
 }
 
 @media screen and (max-width: 58.75em) {

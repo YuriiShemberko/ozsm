@@ -9,6 +9,7 @@
  * @package Agrotech
  */
 wp_enqueue_style( 'at_header_style', get_template_directory_uri() . '/css/header.css' );
+wp_enqueue_script( 'at_cart_script', get_template_directory_uri() . '/js/cart.js' );
 
 ?>
 <!doctype html>
@@ -48,4 +49,13 @@ wp_enqueue_style( 'at_header_style', get_template_directory_uri() . '/css/header
 				);
 			?>
 		</nav><!-- #site-navigation -->
+
+		<div class="cart">
+			<button onclick="location.href = '<?php echo get_site_url() . '/cart' ?>'">
+				<span class="dashicons dashicons-cart"></span>
+			</button>
+		</div>
+		<div class="cart-counter">
+			<span id="cart-products-counter">0</span>
+		</div>
 	</header><!-- #masthead -->

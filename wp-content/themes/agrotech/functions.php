@@ -215,3 +215,66 @@ function at_contact_us_form_submit() {
 		}
 }
 add_action( 'init', 'at_contact_us_form_submit' );
+
+function at_confirm_order() {
+    // Check if there is any post data and if it comes from our form
+    if( empty( $_POST ) || !isset( $_POST[ 'action' ] ) || $_POST[ 'action' ] != 'at_confirm_order') {
+        return;
+    }
+
+		$cart_state = array_key_exists( 'at_cart', $_COOKIE ) ? json_decode(stripslashes( $_COOKIE[ 'at_cart' ] ), true) : [];
+		$cart_items = array_key_exists( 'data', $cart_state ) ? $cart_state[ 'data' ] : [];
+
+    // Check if inputs submitted are valid
+  	if(
+			( !isset( $_POST[ 'at_order_customer_phone' ] ) || empty( $_POST[ 'at_order_customer_phone' ] ) ) ||
+			( !isset( $_POST[ 'at_order_customer_name' ] ) || empty( $_POST[ 'at_order_customer_name' ] ) ) ||
+			( !isset( $_POST[ 'at_order_customer_email' ] ) || empty( $_POST[ 'at_order_customer_email' ] ) ) ||
+			( empty( $cart_items ) )
+		) {
+        $_SESSION[ 'at_order_submit_error' ] = __( 'Помилка: неправильні дані.' );
+        return;
+    }
+
+		$additional_info =
+			isset( $_POST[ 'at_order_optional_message' ] ) && !empty( $_POST[ 'at_order_optional_message' ] ) ?	$_POST[ 'at_order_optional_message' ] : '-';
+
+		$to = "yurii.shemberko@gmail.com";//get_option( 'at_contacts_at_email' );
+		$subject = "Нове замовлення на сайті ozsm.ua";
+		$message =
+			"<h3>Оформлено нове замовлення:</h3>" . "<br>" .
+			"Від: <b>" . $_POST[ 'at_order_customer_name' ] . "</b><br>" .
+			"Email клієнта: " . $_POST[ 'at_order_customer_email' ] . "<br>" .
+			"Номер телефону клієнта: <b>" . $_POST[ 'at_order_customer_phone' ] . "</b><br>" .
+			"Додаткова інформація: " . "<br>" . $additional_info  . "<br><br>" .
+			"<b>Замовлення</b>: " . "<br><br>";
+
+		foreach ( $cart_items as $post_id => $value ) {
+			$amount = $value['amount'];
+      $item_title = get_the_title( $post_id );
+			$item_url = get_post_permalink( $post_id );
+
+			$message = $message .
+				"Товар: " . $item_title . "<br>" .
+				"Посилання: <a href=\"" . $item_url . "\">" . $item_url . "</a><br>" .
+				"Кількість: " . $amount . "<br><br>" ;
+		}
+
+		// Always set content-type when sending HTML email
+		$headers = "MIME-Version: 1.0" . "\r\n";
+		$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+
+		// More headers
+		$headers .= 'From: <admin@ozsm.ua>' . "\r\n";
+
+		$result = mail( $to, $subject, $message, $headers );
+
+		if ($result) {
+			header( 'Location: ' . get_site_url() . '/order_success' );
+			exit();
+			//$_SESSION[ 'at_confirm_order_success' ] = 'Дякуємо! Ми прийняли Ваше замовлення. Наш менеджер скоро зв\'яжеться з Вами.';
+		} else {
+			$_SESSION[ 'at_confirm_order_error' ] = 'Виникла непередбачувана помилка при оформленні Вашого замовлення. Будь ласка, спробуйте знову.';
+		}
+}
+add_action( 'init', 'at_confirm_order' );

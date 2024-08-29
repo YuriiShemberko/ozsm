@@ -10,6 +10,7 @@ $product_attrs = array_key_exists( 'attributes', $args ) ? $args['attributes'] :
 array_unshift( $images_list, $main_image );
 
 wp_enqueue_style( 'at_common_info_style', get_template_directory_uri() . '/css/common-info.css' );
+wp_enqueue_script( 'at_common_info_script', get_template_directory_uri() . '/js/common-info.js' );
 ?>
   <div class="good-wrapper">
     <div class="images-section-wrapper">
@@ -19,12 +20,19 @@ wp_enqueue_style( 'at_common_info_style', get_template_directory_uri() . '/css/c
       <h2><?php echo $title ?></h2>
 			<div class="price-section">
 				<h3>Ціна</h3>
-				<h2><?php echo $price ?></h2>
+				<h2><?php echo $price . ' грн.' ?></h2>
 			</div>
-			<button class="contact-button">
-				<h3>Замовити</h3>
-				<span class="dashicons dashicons-phone"></span>
-			</button>
+      <div class="actions-section">
+        <button class="contact-button" onclick="onAddToCartClick(this)" value="<?php echo $post->ID ?>">
+          <span class="dashicons dashicons-cart"></span>
+          <h3>До кошику</h3>
+        </button>
+        <div id="add-to-cart-notification">
+          <span class="dashicons dashicons-yes cart-status"></span>
+          <span class="cart-status">Товар додано до кошику.</span>
+          <a href="<?php echo get_site_url() . '/cart' ?>">Оформити замовлення</a>
+        </div>
+      </div>
       <div><?php echo $description ?></div>
 			<?php
 				if ( !empty( $product_attrs ) && !empty( $product_attrs[0] ) ) {
