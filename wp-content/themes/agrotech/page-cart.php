@@ -21,7 +21,7 @@ $order_path = get_site_url() . '/order';
         ) );
 			?>
 			<?php if (!$is_cart_empty) { ?>
-				<button id="cart-confirm" onClick="window.location.href='<?php echo $order_path ?>'">Оформити замовлення</button>
+				<button class="levitating" id="cart-confirm" onClick="window.location.href='<?php echo $order_path ?>'">Оформити замовлення</button>
 			<?php } ?>
 		</div>
 

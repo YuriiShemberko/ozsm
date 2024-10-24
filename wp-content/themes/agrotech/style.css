@@ -1020,6 +1020,14 @@ button, input[type="button"], input[type="submit"] {
 	padding: 1rem;
 }
 
+.levitating {
+  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.2);
+	transition: box-shadow 0.3s;
+	&:hover {
+		box-shadow: rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px, rgba(17, 17, 26, 0.1) 0px 24px 80px;
+	}
+}
+
 .page-header {
 	text-align: center;
 	text-transform: uppercase;
@@ -1036,10 +1044,80 @@ hr {
 	min-height: 100vh;
 }
 
+img.medium {
+	width: 10rem;
+	margin-bottom: 2rem;
+}
+
 .order-success {
-	max-width: 40rem;
+	max-width: 50rem;
 	margin-left: auto;
 	margin-right: auto;
 	margin-top: 4rem;
 	text-align: center;
+}
+
+.comments-wrapper {
+	margin: 0 2rem 2rem 2rem;
+	position: relative;
+
+	h3 {
+		margin: 1rem 0;
+	}
+
+	a {
+		font-size: .75rem;
+	}
+
+	.commentlist {
+		padding: 0;
+		margin: 1rem 0;
+		list-style-type: none;
+	}
+
+	.navigation {
+		display: flex;
+		justify-content: space-between;
+	}
+
+	.comment-body {
+		margin: 1rem 0;
+		background: white;
+		padding: .5rem;
+	}
+
+	small {
+		margin: 0 .5rem;
+	}
+
+	.children {
+		margin-left: 0;
+	}
+
+	.comment-metadata {
+		a, a:visited {
+			color: lightgrey;
+			text-decoration: none;
+		}
+
+		a.comment-edit-link {
+			color: var(--accent-color);
+		}
+	}
+
+	p {
+		margin: .5rem 0;
+	}
+
+	#comment {
+		resize: none;
+		box-sizing: border-box;
+		height: 4rem;
+	}
+}
+
+.centered {
+	margin-left: auto;
+	margin-right: auto;
+	width: fit-content;
 }

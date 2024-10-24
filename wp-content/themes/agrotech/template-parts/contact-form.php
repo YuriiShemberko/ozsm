@@ -27,7 +27,7 @@
 
     <input type="hidden" name="at_contact_form_context" value="<?php echo $context ?>">
     <input type="hidden" name="action" value="at_contact_us_form_submit">
-    <input type="submit" id="contact-form-submit-btn" value="Надіслати">
+    <input type="submit" id="contact-form-submit-btn" class="levitating" value="Надіслати">
 
     <div class="contact-form-submit-result">
       <?php

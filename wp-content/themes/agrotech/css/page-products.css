@@ -1,0 +1,35 @@
+.page-products-content {
+  margin: 2rem;
+
+  h2 {
+    text-align: center;
+  }
+}
+
+.categories-wrapper {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.category-container {
+  cursor: pointer;
+  padding: 1rem;
+  border-radius: .25rem;
+  h3 {
+    text-align: center;
+    margin: 0;
+  }
+}
+
+.popular-products {
+  margin: 4rem auto;
+  max-width: 100rem;
+
+  h2 {
+    text-align: center;
+  }
+}

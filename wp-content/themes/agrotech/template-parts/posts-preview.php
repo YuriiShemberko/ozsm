@@ -11,6 +11,7 @@ $title = array_key_exists( 'title', $args ) ? $args['title'] : [];
     foreach ( $posts as $post ) {
       $title = get_the_title( $post );
       $img_src = get_the_post_thumbnail_url( $post );
+      $price = get_post_meta( $post, 'at_good_price', true );
       $link = get_permalink( $post );
     ?>
       <div class="post-preview-container" onclick="location.href = '<?php echo $link; ?>'">
@@ -18,6 +19,7 @@ $title = array_key_exists( 'title', $args ) ? $args['title'] : [];
           <img src="<?php echo $img_src ?>" />
         </div>
         <h5><?php echo $title; ?></h5>
+        <h4><?php echo $price; ?> грн.</h4>
       </div>
     <?php
     }

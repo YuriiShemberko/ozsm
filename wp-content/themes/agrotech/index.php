@@ -9,7 +9,7 @@ $products_query = new WP_query ( array (
 	'orderby' => 'comment_count'
 ) );
 
-$products = $products_query->get_posts();
+$products = wp_list_pluck( $products_query->get_posts(), 'ID' );
 ?>
 
 	<main id="primary" class="site-main">
@@ -38,7 +38,7 @@ $products = $products_query->get_posts();
 					"title" => "Популярна продукція",
 				) )
 			?>
-			<button class="button-more" onclick="location.href = '<?php echo get_site_url() . '/products' ?>'">
+			<button class="levitating button-more" onclick="location.href = '<?php echo get_site_url() . '/products' ?>'">
 				Більше товарів
 			</button>
 		</div>

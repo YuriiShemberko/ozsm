@@ -172,6 +172,11 @@ if ( defined( 'JETPACK__VERSION' ) ) {
 	require get_template_directory() . '/inc/jetpack.php';
 }
 
+function at_load_dashicons(){
+   wp_enqueue_style('dashicons');
+}
+add_action('wp_enqueue_scripts', 'at_load_dashicons', 999);
+
 function at_contact_us_form_submit() {
     // Check if there is any post data and if it comes from our form
     if( empty( $_POST ) || !isset( $_POST[ 'action' ] ) || $_POST[ 'action' ] != 'at_contact_us_form_submit') {

@@ -42,7 +42,7 @@ $cart_path = get_site_url() . '/cart';
 							<textarea cols="10" rows="5" charswidth="23" name="at_order_optional_message" id="at_order_optional_message"></textarea>
 						</div>
 						<input type="hidden" name="action" value="at_confirm_order">
-						<input type="submit" id="contact-form-submit-btn" value="Підтвердити замовлення">
+						<input class="levitating" type="submit" id="contact-form-submit-btn" value="Підтвердити замовлення">
 
 						<?php if ( isset( $_SESSION ) && isset( $_SESSION[ 'at_confirm_order_error' ] ) ) { ?>
 							<div class="order-confirm-error">

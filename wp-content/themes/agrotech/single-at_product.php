@@ -13,7 +13,7 @@ $related_spare_parts_query_args = array(
     ),
 );
 $related_spare_parts_query = new WP_query ( $related_spare_parts_query_args );
-$related_spare_parts = array_merge( $related_spare_parts_query->get_posts() );
+$related_spare_parts = wp_list_pluck( $related_spare_parts_query->posts, 'ID' );
 
 get_header();
 ?>
@@ -32,10 +32,19 @@ get_header();
           ) );
         }
       ?>
-    </div>
 
-    <?php
-      get_footer();
-    ?>
+      <div class="comments-wrapper">
+        <h2>Відгуки</h2>
+        <?php
+          wp_reset_postdata();
+          wp_reset_query();
+          comments_template();
+        ?>
+      </div>
+    </div>
   </div>
 </main>
+
+<?php
+  get_footer();
+?>

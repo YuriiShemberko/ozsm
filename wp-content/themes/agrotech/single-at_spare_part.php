@@ -19,11 +19,22 @@ get_header();
         }
 
       ?>
-    </div>
 
-    <?php
-      get_footer();
-    ?>
+      <div class="comments-wrapper">
+        <h2>Відгуки</h2>
+        <div>
+          <?php
+            wp_reset_postdata();
+            wp_reset_query();
+            comments_template();
+          ?>
+        </div>
+      </div>
+    </div>
 
   </div>
 </main>
+
+<?php
+  get_footer();
+?>

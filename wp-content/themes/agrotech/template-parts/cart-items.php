@@ -50,8 +50,11 @@ $cart_items = array_key_exists( 'cart_items', $args ) ? $args['cart_items'] : []
 <?php
   } else {
     ?>
-      <h3>Ваш кошик наразі порожній.</h3>
-      <a href="<?php echo get_site_url() ?>">На головну</a>
+      <div class="cart-empty-state">
+        <img class="medium" src="<?php echo get_template_directory_uri() . '/img/empty-cart.png'?>" />
+        <h3>Ваш кошик наразі порожній</h3>
+        <button class="levitating" onclick="window.location='<?php echo get_site_url() ?>'">На головну</button>
+      </div>
     <?php
   }
 ?>
