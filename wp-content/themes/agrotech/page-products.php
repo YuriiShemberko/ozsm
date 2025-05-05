@@ -33,7 +33,9 @@ $popular_products = wp_list_pluck( $products_query->get_posts(), 'ID' );
           $term_img = wp_get_attachment_image_src( $term_img_id, 'medium' )[0];
         ?>
             <div class="category-container levitating" onclick="window.location='<?php echo $term_slug ?>'">
-              <img src="<?php echo $term_img ?>" />
+              <div class="category-image-wrapper">
+                <img src="<?php echo $term_img ?>" />
+              </div>
               <h3><?php echo $term_name ?></h3>
             </div>
         <?php } ?>

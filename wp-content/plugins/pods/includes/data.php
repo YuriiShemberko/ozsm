@@ -1594,10 +1594,10 @@ function pods_str_replace( $find, $replace, $string, $occurrences = - 1 ) {
  */
 function pods_mb_strlen( $string ) {
 	if ( function_exists( 'mb_strlen' ) ) {
-		return mb_strlen( $string );
+		return mb_strlen( (string) $string );
 	}
 
-	return strlen( $string );
+	return strlen( (string) $string );
 }
 
 /**
@@ -1978,6 +1978,7 @@ function pods_serial_comma( $value, $field = null, $fields = null, $and = null, 
 		'field_index' => $field_index,
 		'separator'   => null,
 		'serial'      => true,
+		'force'       => false,
 	);
 
 	if ( is_array( $field ) ) {
@@ -1992,14 +1993,13 @@ function pods_serial_comma( $value, $field = null, $fields = null, $and = null, 
 
 	$simple = false;
 
-	if ( ! empty( $params->fields ) && is_array( $params->fields ) && isset( $params->fields[ $params->field ] ) ) {
+	if ( ! $params->force && ! empty( $params->fields ) && is_array( $params->fields ) && isset( $params->fields[ $params->field ] ) ) {
 		$params->field = $params->fields[ $params->field ];
 
 		if ( 1 === (int) pods_v( 'repeatable', $params->field, 0 ) ) {
 			$format = pods_v( 'repeatable_format', $params->field, 'default', true );
 
 			if ( 'default' !== $format ) {
-
 				switch ( $format ) {
 					case 'ul':
 					case 'ol':
@@ -2580,11 +2580,12 @@ function pods_is_truthy( $value ) {
 
 	// This is the list of strings we will support as truthy.
 	$supported_strings = [
-		'1'    => true,
-		'true' => true,
-		'on'   => true,
-		'yes'  => true,
-		'y'    => true,
+		'1'       => true,
+		'true'    => true,
+		'on'      => true,
+		'yes'     => true,
+		'y'       => true,
+		'enabled' => true,
 	];
 
 	return isset( $supported_strings[ $value ] );
@@ -3098,4 +3099,51 @@ function pods_enforce_safe_url( string $url, ?string $fallback_url = null ) {
 	}
 
 	return wp_validate_redirect( $url, $fallback_url );
+}
+
+/**
+ * Enforce safety and standards on a value for the HTML attribute "class" context.
+ *
+ * @since 3.2.8.1
+ *
+ * @param string|null $value The value to enforce standards for.
+ *
+ * @return string|null The safe value.
+ */
+function pods_enforce_safe_class( ?string $value ): ?string {
+	return pods_enforce_safe_value_via_regex( $value, '/[^a-zA-Z0-9\s_\-]/' );
+}
+
+/**
+ * Enforce safety and standards on a value for the HTML attribute "id" context.
+ *
+ * @since 3.2.8.1
+ *
+ * @param string|null $value The value to enforce standards for.
+ *
+ * @return string|null The safe value.
+ */
+function pods_enforce_safe_id( ?string $value ): ?string {
+	return pods_enforce_safe_value_via_regex( $value, '/[^a-zA-Z0-9_\-\[\]]/' );
+}
+
+/**
+ * Enforce safety and standards on a value via a disallowed pattern.
+ *
+ * @since 3.2.8.1
+ *
+ * @param string|null $value              The value to enforce standards for.
+ * @param string      $disallowed_pattern The disallowed pattern to remove matching characters.
+ *
+ * @return string|null The safe value.
+ */
+function pods_enforce_safe_value_via_regex( ?string $value, string $disallowed_pattern ): ?string {
+	if ( null === $value ) {
+		return $value;
+	}
+
+	// Strip tags and the script tag contents.
+	$value = wp_strip_all_tags( $value );
+
+	return (string) preg_replace( $disallowed_pattern, '', $value );
 }

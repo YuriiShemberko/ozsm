@@ -1,5 +1,6 @@
 <?php
 $post = get_post();
+
 $product_attrs = get_post_meta( $post->ID, 'at_product_attrs' );
 $related_spare_parts_query_args = array(
     'post_type' => 'at_spare_part',

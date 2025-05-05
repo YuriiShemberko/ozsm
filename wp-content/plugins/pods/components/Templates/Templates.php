@@ -76,7 +76,11 @@ class Pods_Templates extends PodsComponent {
 	 * {@inheritdoc}
 	 */
 	public function init() {
-		$this->register_config();
+		if ( ! did_action( 'init' ) ) {
+			add_action( 'init', [ $this, 'register_config' ] );
+		} else {
+			$this->register_config();
+		}
 
 		if ( is_admin() ) {
 			add_filter( 'post_updated_messages', array( $this, 'setup_updated_messages' ), 10, 1 );
@@ -126,7 +130,7 @@ class Pods_Templates extends PodsComponent {
 			$args['capability_type'] = $this->capability_type;
 		}
 
-		$args = PodsInit::object_label_fix( $args, 'post_type' );
+		$args = PodsInit::object_label_fix( $args, 'post_type', $this->object_type );
 
 		register_post_type( $this->object_type, apply_filters( 'pods_internal_register_post_type_object_template', $args ) );
 
@@ -510,10 +514,21 @@ class Pods_Templates extends PodsComponent {
 
 		// objects will be automatically sanitized
 		if ( $revisions ) {
-			add_action( 'pre_post_update', 'wp_save_post_revision' );
+			add_action( 'pre_post_update', [ $this, 'save_post_revision_for_post' ] );
 		}
 
 		return true;
+	}
+
+	/**
+	 * Save post revision for a post without a return.
+	 *
+	 * @since 3.2.8
+	 *
+	 * @param int $post_id The post ID.
+	 */
+	public function save_post_revision_for_post( $post_id ) {
+		wp_save_post_revision( $post_id );
 	}
 
 	/**
@@ -541,6 +556,8 @@ class Pods_Templates extends PodsComponent {
 		if ( empty( $obj ) || ! is_object( $obj ) ) {
 			return '';
 		}
+
+		$has_code_override = ! empty( $code );
 
 		/** @var Pods $obj */
 
@@ -608,9 +625,22 @@ class Pods_Templates extends PodsComponent {
 
 		$info = $check_access ? pods_info_from_args( [ 'pods' => $obj ] ) : [];
 
+		$process_magic_tags = false;
+
 		ob_start();
 
-		if ( ! empty( $code ) ) {
+		// @todo If the template exists, uses that, otherwise use the $code.
+
+		$template_file = null;
+
+		if ( $template_name && $template_name === trim( preg_replace( '/[^a-zA-Z0-9_\-\/]/', '', (string) $template_name ), ' /-' ) ) {
+			$default_templates   = self::get_templates_for_pod_template( $template, $obj );
+			$template_files_info = self::get_template_files_info( $default_templates );
+
+			$template_file = array_key_first( $template_files_info );
+		}
+
+		if ( $has_code_override || ( ! $template_file && ! empty( $code ) ) ) {
 			// Only detail templates need $this->id
 			if ( empty( $obj->id ) ) {
 				$obj->reset();
@@ -629,7 +659,7 @@ class Pods_Templates extends PodsComponent {
 						continue;
 					}
 
-					echo self::do_template( $code, $obj );
+					echo self::do_template( $code, $obj, true );
 				}
 			} else {
 				$info['item_id'] = $obj->id();
@@ -641,17 +671,13 @@ class Pods_Templates extends PodsComponent {
 						&& ! pods_access_bypass_private_post( $info )
 					)
 				) {
-					echo self::do_template( $code, $obj );
+					echo self::do_template( $code, $obj, true );
 				}
 			}
-		} elseif ( $template_name == trim( preg_replace( '/[^a-zA-Z0-9_\-\/]/', '', $template_name ), ' /-' ) ) {
-			$default_templates = array(
-				'pods/' . $template_name,
-				'pods-' . $template_name,
-				$template_name,
-			);
-
-			$default_templates = apply_filters( 'pods_template_default_templates', $default_templates );
+		} elseif ( $template_file ) {
+			if ( $template_files_info[ $template_file ]['MagicTags'] ) {
+				$process_magic_tags = true;
+			}
 
 			if ( empty( $obj->id ) ) {
 				while ( $obj->fetch() ) {
@@ -668,7 +694,13 @@ class Pods_Templates extends PodsComponent {
 						continue;
 					}
 
-					pods_template_part( $default_templates, compact( array_keys( get_defined_vars() ) ) );
+					$template_output = pods_template_part( $template_file, compact( array_keys( get_defined_vars() ) ), true );
+
+					if ( $process_magic_tags ) {
+						$template_output = self::do_template( $template_output, $obj );
+					}
+
+					echo $template_output;
 				}
 			} else {
 				$info['item_id'] = $obj->id();
@@ -680,7 +712,13 @@ class Pods_Templates extends PodsComponent {
 						&& ! pods_access_bypass_private_post( $info )
 					)
 				) {
-					pods_template_part( $default_templates, compact( array_keys( get_defined_vars() ) ) );
+					$template_output = pods_template_part( $template_file, compact( array_keys( get_defined_vars() ) ), true );
+
+					if ( $process_magic_tags ) {
+						$template_output = self::do_template( $template_output, $obj );
+					}
+
+					echo $template_output;
 				}
 			}
 		}//end if
@@ -694,15 +732,92 @@ class Pods_Templates extends PodsComponent {
 	}
 
 	/**
+	 * Get templates for pod page.
+	 *
+	 * @since 3.2.8
+	 *
+	 * @param array|Template $template The pod template data.
+	 * @param Pods|null      $obj      The Pods object.
+	 *
+	 * @return array The list of templates for the pod template.
+	 */
+	public static function get_templates_for_pod_template( $template, $obj = null ): array {
+		$template_name = $template instanceof Template ? $template->get_name() : ( $template['slug'] ?? $template['name'] );
+
+		if ( empty( $template_name ) ) {
+			return [];
+		}
+
+		$template_name = trim( preg_replace( '/[^a-zA-Z0-9_\-\/]/', '', (string) $template_name ), ' /-' );
+
+		$default_templates = array(
+			'pods/templates/' . $template_name . '.php',
+			'pods/' . $template_name . '.php',
+			'pods-' . $template_name . '.php',
+			$template_name . '.php',
+		);
+
+		/**
+		 * Allow filtering the list of default theme templates to check for a template.
+		 *
+		 * @since unknown
+		 *
+		 * @param string[]       $default_templates The list of default theme templates to check for a template.
+		 * @param string         $template_name     The template name.
+		 * @param array|Template $template          The template information.
+		 * @param Pods           $obj               The Pods object.
+		 */
+		return (array) apply_filters( 'pods_template_default_templates', $default_templates, $template_name, $template, $obj );
+	}
+
+	/**
+	 * Get the list of template header information for each of the template files.
+	 *
+	 * @since 3.2.8
+	 *
+	 * @param array<int,string> $template_files The list of template files.
+	 *
+	 * @return array The list of template header information for each of the template files.
+	 */
+	public static function get_template_files_info( array $template_files ): array {
+		$template_files_info = [];
+
+		foreach ( $template_files as $template_file ) {
+			$file_path = locate_template( $template_file );
+
+			// Skip if template was not found.
+			if ( '' === $file_path ) {
+				continue;
+			}
+
+			$data = get_file_data( $file_path, [
+				'PodTemplate'  => 'Pod Template',
+				'MagicTags' => 'Magic Tags',
+			] );
+
+			$data['MagicTags'] = pods_is_truthy( $data['MagicTags'] );
+
+			$template_files_info[ $template_file ] = $data;
+		}
+
+		return $template_files_info;
+	}
+
+	/**
 	 * Parse a template string
 	 *
-	 * @param string $code The template string to parse
-	 * @param object $obj  The Pods object
+	 * @param string $code        The template string to parse
+	 * @param object $obj         The Pods object
+	 * @param bool   $process_php Whether to process PHP -- this will be removed in Pods 3.3+.
 	 *
 	 * @since 1.8.5
 	 * @return mixed|string|void
 	 */
-	public static function do_template( $code, $obj = null ) {
+	public static function do_template(
+		$code,
+		$obj = null,
+		$process_php = false
+	) {
 		if ( ! empty( $obj ) ) {
 			self::$obj =& $obj;
 		} else {
@@ -716,20 +831,22 @@ class Pods_Templates extends PodsComponent {
 		$out = '';
 
 		if ( false !== strpos( $code, '<?' ) ) {
-			// @todo Remove this code in Pods 3.3 and completely ignore any $code that starts with <? in the string.
-			_doing_it_wrong( 'Pods Templates', 'Pod Template PHP code is no longer actively supported and will be completely removed in Pods 3.3', '3.0' );
+			$code = str_replace( '$this->', '$obj->', $code );
 
-			if ( ! PODS_DISABLE_EVAL ) {
-				pods_deprecated( 'Pod Template PHP code has been deprecated, please use WP Templates instead of embedding PHP.', '2.3' );
+			ob_start();
 
-				$code = str_replace( '$this->', '$obj->', $code );
+			/**
+			 * Allow evaluating Pod Template content by custom code snippet if needed.
+			 *
+			 * @since 3.3.0
+			 *
+			 * @param string $code        The template string to parse.
+			 * @param object $obj         The Pods object.
+			 * @param bool   $process_php Whether to process PHP.
+			 */
+			do_action( 'pods_templates_eval_content', $code, $obj, $process_php );
 
-				ob_start();
-
-				eval( "?>$code" );
-
-				$out = (string) ob_get_clean();
-			}
+			$out = (string) ob_get_clean();
 		} else {
 			$out = $code;
 		}

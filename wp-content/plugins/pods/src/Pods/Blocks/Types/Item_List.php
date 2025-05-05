@@ -426,7 +426,15 @@ class Item_List extends Base {
 			$attributes['filters'] = false;
 		}
 
+		if ( ! empty( $attributes['not_found'] ) && $this->should_autop( $attributes['not_found'] ) ) {
+			$attributes['not_found'] = wpautop( $attributes['not_found'], $attributes );
+		}
+
+		pods_set_render_is_in_block( true );
+
 		$content = pods_shortcode( $attributes, $attributes['template_custom'] );
+
+		pods_set_render_is_in_block( false );
 
 		if ( '' !== $content ) {
 			if ( ! empty( $attributes['content_before'] ) ) {

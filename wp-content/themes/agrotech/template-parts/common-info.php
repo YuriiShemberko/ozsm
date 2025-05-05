@@ -8,7 +8,6 @@ $price = get_post_meta( $post->ID, 'at_good_price', true );
 $images_list = get_post_meta( $post->ID, 'at_good_images', false );
 $product_attrs = array_key_exists( 'attributes', $args ) ? $args['attributes'] : [];
 array_unshift( $images_list, $main_image );
-
 wp_enqueue_style( 'at_common_info_style', get_template_directory_uri() . '/css/common-info.css' );
 wp_enqueue_script( 'at_common_info_script', get_template_directory_uri() . '/js/common-info.js' );
 ?>

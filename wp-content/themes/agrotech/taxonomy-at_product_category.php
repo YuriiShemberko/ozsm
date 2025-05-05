@@ -5,6 +5,7 @@ get_header();
 wp_enqueue_style( 'at_category_products_page_style', get_template_directory_uri() . '/css/category-products.css' );
 
 $term = get_queried_object();
+
 $category_id = $term->term_id;
 $category_name = $term->name;
 $products_query_args = array(
@@ -12,7 +13,7 @@ $products_query_args = array(
     'meta_query' => array(
         'relation' => 'AND',
         array(
-          'key' => 'at_product_category_id',
+          'key' => 'at_product_category',
           'value' => $category_id,
           'compare' => '=',
         ),

@@ -210,12 +210,13 @@ class Field extends Base {
 			unset( $attributes['use_current'] );
 		}
 
+		pods_set_render_is_in_block( true );
+
 		$content = pods_shortcode( $attributes );
 
-		if (
-			false === strpos( $content, '<div' )
-			&& false === strpos( $content, '<p' )
-		) {
+		pods_set_render_is_in_block( false );
+
+		if ( $this->should_autop( $content, $attributes ) ) {
 			$content = wpautop( $content );
 		}
 
