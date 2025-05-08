@@ -32,6 +32,10 @@ $products = wp_list_pluck( $products_query->get_posts(), 'ID' );
 			</div>
 		</div>
 
+		<div class="hero-mobile">
+			<img src="<?php echo get_template_directory_uri() . '/img/hero-mobile.png' ?>" />
+		</div>
+
 		<div id="products" class="products-preview-wrapper">
 			<?php get_template_part( 'template-parts/posts-preview', 'at_main_page_products_preview', array (
 					"posts" => $products,

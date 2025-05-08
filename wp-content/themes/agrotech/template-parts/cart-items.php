@@ -16,7 +16,7 @@ $cart_items = array_key_exists( 'cart_items', $args ) ? $args['cart_items'] : []
         foreach ( $cart_items as $post_id => $value ) {
           $item_title = get_the_title( $post_id );
           $item_thumbnail_src = get_the_post_thumbnail_url( $post_id, 'thumbnail' );
-          $item_price = get_post_meta( $post_id, 'at_good_price' )[0];
+          $item_price = intval( get_post_meta( $post_id, 'at_good_price' )[0] );
           $amount = $value[ 'amount' ];
           $total_sum += $amount * $item_price;
         ?>

@@ -39,7 +39,7 @@ wp_enqueue_script( 'at_cart_script', get_template_directory_uri() . '/js/cart.js
 		</div><!-- .site-branding -->
 
 		<nav id="site-navigation" class="main-navigation">
-			<button class="menu-toggle" aria-controls="primary-menu" aria-expanded="false"><?php esc_html_e( 'Primary Menu', 'agrotech' ); ?></button>
+			<button class="menu-toggle" aria-controls="primary-menu" aria-expanded="false"><?php esc_html_e( '≡', 'agrotech' ); ?></button>
 			<?php
 				wp_nav_menu(
 					array(

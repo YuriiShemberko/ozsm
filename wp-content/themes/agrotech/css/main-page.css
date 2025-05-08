@@ -84,3 +84,30 @@
     width: 100%;
   }
 }
+
+.hero-mobile {
+  display: none;
+  padding: 2rem;
+  background: white;
+
+  img {
+    max-width: 18rem;
+  }
+}
+
+@media screen and (max-width: 37.5em) {
+  .contact-form-wrapper {
+    max-width: 100%;
+    padding: 2rem;
+  }
+
+  .hero-wrapper {
+    display: none;
+  }
+
+  .hero-mobile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}

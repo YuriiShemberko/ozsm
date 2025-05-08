@@ -94,3 +94,16 @@
     object-fit: contain;
   }
 }
+
+@media screen and (max-width: 37.5em) {
+  .posts-preview-container {
+    flex-direction: column;
+  }
+
+  .post-preview-container {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 12rem;
+    min-width: 12rem;
+  }
+}

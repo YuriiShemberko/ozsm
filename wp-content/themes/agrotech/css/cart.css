@@ -84,3 +84,7 @@
     margin: 0;
   }
 }
+
+#at_order_confirmation_form {
+  padding: 0 2rem;
+}
